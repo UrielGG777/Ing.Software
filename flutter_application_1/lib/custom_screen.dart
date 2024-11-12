@@ -19,6 +19,7 @@ class _CustomScreenState extends State<CustomScreen> {
   String _searchText = '';
 
   List<Map<String, String>> clients = [];
+  List<Map<String, String>> providers = [];
 
   @override
   Widget build(BuildContext context) {
@@ -110,7 +111,7 @@ class _CustomScreenState extends State<CustomScreen> {
               _searchText.isNotEmpty
                   ? Text(
                       'Resultados para "$_searchText"',
-                      style: const TextStyle(color: Colors.black, fontSize: 16),
+                      style: const TextStyle(color: Colors.white, fontSize: 16),
                       textAlign: TextAlign.center,
                     )
                   : Text(
@@ -150,8 +151,18 @@ class _CustomScreenState extends State<CustomScreen> {
 
     if (filteredClients.isEmpty) {
       return Center(
-          child:
-              Text('No hay clientes', style: TextStyle(color: Colors.white)));
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.info_outline, color: Colors.white, size: 50),
+            const SizedBox(height: 10),
+            Text(
+              'No hay Clientes',
+              style: TextStyle(color: Colors.white, fontSize: 18),
+            ),
+          ],
+        ),
+      );
     } else {
       return ListView.builder(
         itemCount: filteredClients.length,
@@ -272,7 +283,8 @@ class _CustomScreenState extends State<CustomScreen> {
               final result = await Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => Release_Client(onSave: addClient)),
+                  builder: (context) => Release_Client(onSave: addClient),
+                ),
               );
 
               if (result != null && result is Map<String, String>) {
@@ -281,10 +293,18 @@ class _CustomScreenState extends State<CustomScreen> {
                 });
               }
             } else if (index == 1) {
-              Navigator.push(
+              //  Altas Proveedor
+              final result = await Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => Release_Provider()),
+                MaterialPageRoute(
+                  builder: (context) => Release_Provider(onSave: addProvider),
+                ),
               );
+              if (result != null && result is Map<String, String>) {
+                setState(() {
+                  providers.add(result);
+                });
+              }
             }
           },
         ),
@@ -295,6 +315,12 @@ class _CustomScreenState extends State<CustomScreen> {
   void addClient(Map<String, String> clientData) {
     setState(() {
       clients.add(clientData);
+    });
+  }
+
+  void addProvider(Map<String, String> providerData) {
+    setState(() {
+      providers.add(providerData);
     });
   }
 
@@ -318,8 +344,12 @@ class _CustomScreenState extends State<CustomScreen> {
               leading: Icon(Icons.add_box_sharp, color: Colors.white),
               title: Text('Proveedores', style: TextStyle(color: Colors.white)),
               onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => SeeSupplier()));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => SeeSupplier(
+                              providers: providers,
+                            )));
               },
             ),
             ListTile(

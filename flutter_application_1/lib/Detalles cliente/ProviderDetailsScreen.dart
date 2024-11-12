@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 
-class ClientDetailsScreen extends StatelessWidget {
-  final Map<String, String> client;
+class Providerdetailsscreen extends StatelessWidget {
+  final Map<String, String> providers;
 
-  const ClientDetailsScreen({Key? key, required this.client}) : super(key: key);
+  const Providerdetailsscreen({Key? key, required this.providers})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +13,7 @@ class ClientDetailsScreen extends StatelessWidget {
       appBar: AppBar(
         iconTheme: IconThemeData(color: Colors.white),
         title: Text(
-          'Detalles del Cliente',
+          'Detalles del Proveedor',
           style: TextStyle(
               color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold),
         ),
@@ -30,7 +31,7 @@ class ClientDetailsScreen extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.center,
-            children: client.entries.map((entry) {
+            children: providers.entries.map((entry) {
               return Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8.0),
                 child: Text(

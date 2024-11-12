@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 
 class Release_Provider extends StatefulWidget {
+  final Function(Map<String, String>) onSave;
+  final Map<String, String>? providers;
+
+  Release_Provider({required this.onSave, this.providers});
+
   @override
   _ReleaseProviderState createState() => _ReleaseProviderState();
 }
@@ -15,9 +20,23 @@ class _ReleaseProviderState extends State<Release_Provider> {
   final TextEditingController _emailController = TextEditingController();
 
   @override
+  void initState() {
+    super.initState();
+    // Initialize the text controllers with existing data if available
+    if (widget.providers != null) {
+      _nameController.text = widget.providers!['Nombre'] ?? '';
+      _representativeController.text = widget.providers!['Representante'] ?? '';
+      _rfcController.text = widget.providers!['RFC'] ?? '';
+      _addressController.text = widget.providers!['Direccion'] ?? '';
+      _phoneController.text = widget.providers!['Telefono'] ?? '';
+      _emailController.text = widget.providers!['Correo Electronico'] ?? '';
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFF8470A1),
+      backgroundColor: const Color(0xFF8470A1),
       body: SafeArea(
         child: Column(
           children: [
@@ -36,29 +55,30 @@ class _ReleaseProviderState extends State<Release_Provider> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           IconButton(
-            icon: Icon(Icons.arrow_back, color: Colors.white),
+            icon: const Icon(Icons.arrow_back, color: Colors.white),
             onPressed: () {
               Navigator.pop(context);
             },
           ),
           Text(
-            'Registro Proveedor',
+            widget.providers == null
+                ? 'Registro Proveedor'
+                : 'Modificar Proveedor',
             style: TextStyle(
                 color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold),
           ),
-          SizedBox(width: 48),
+          const SizedBox(width: 48),
         ],
       ),
     );
   }
 
-  // Contenedor para los formularios
   Widget buildFormContainer() {
     return Expanded(
       child: Container(
-        margin: EdgeInsets.all(16.0),
+        margin: const EdgeInsets.all(16.0),
         decoration: BoxDecoration(
-          color: Color(0xFF2F2740), // Fondo oscuro del formulario
+          color: const Color(0xFF2F2740),
           borderRadius: BorderRadius.circular(30),
         ),
         child: Padding(
@@ -75,16 +95,13 @@ class _ReleaseProviderState extends State<Release_Provider> {
               ElevatedButton(
                 onPressed: submitForm,
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Color(0xFF463D5E),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  padding: EdgeInsets.symmetric(horizontal: 40, vertical: 12),
-                ),
+                    backgroundColor: Color(0xFF463D5E),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    )),
                 child: Text(
-                  'Agregar',
-                  style: TextStyle(
-                      color: Colors.white, fontWeight: FontWeight.bold),
+                  widget.providers == null ? 'Registrar' : 'Guardar Cambios',
+                  style: TextStyle(color: Colors.white),
                 ),
               ),
             ],
@@ -116,26 +133,17 @@ class _ReleaseProviderState extends State<Release_Provider> {
     );
   }
 
-  // Widget para el clip en la parte inferior de la pantalla
-
   void submitForm() {
-    print('Formulario enviado');
-  }
-}
+    final providerData = {
+      'Nombre': _nameController.text,
+      'Representante': _representativeController.text,
+      'RFC': _rfcController.text,
+      'Direccion': _addressController.text,
+      'Telefono': _phoneController.text,
+      'Correo Electronico': _emailController.text,
+    };
 
-// Clase para el clip personalizado
-class BottomNavClipper extends CustomClipper<Path> {
-  @override
-  Path getClip(Size size) {
-    Path path = Path();
-    path.lineTo(0, size.height - 30);
-    path.quadraticBezierTo(
-        size.width / 2, size.height, size.width, size.height - 30);
-    path.lineTo(size.width, 0);
-    path.close();
-    return path;
+    widget.onSave(providerData);
+    Navigator.pop(context);
   }
-
-  @override
-  bool shouldReclip(CustomClipper<Path> oldClipper) => true;
 }
