@@ -23,12 +23,12 @@ class _ReleaseClientState extends State<Release_Client> {
   void initState() {
     super.initState();
     if (widget.client != null) {
-      _nameController.text = widget.client!['name'] ?? '';
-      _emailController.text = widget.client!['email'] ?? '';
-      _representativeController.text = widget.client!['representative'] ?? '';
-      _rfcController.text = widget.client!['rfc'] ?? '';
-      _addressController.text = widget.client!['address'] ?? '';
-      _phoneController.text = widget.client!['phone'] ?? '';
+      _nameController.text = widget.client!['Nombre'] ?? '';
+      _emailController.text = widget.client!['Correo Electronico'] ?? '';
+      _representativeController.text = widget.client!['Representante'] ?? '';
+      _rfcController.text = widget.client!['RFC'] ?? '';
+      _addressController.text = widget.client!['Direccion'] ?? '';
+      _phoneController.text = widget.client!['Telefono'] ?? '';
     }
   }
 
@@ -89,7 +89,7 @@ class _ReleaseClientState extends State<Release_Client> {
               buildTextField(_rfcController, 'RFC'),
               buildTextField(_addressController, 'Dirección'),
               buildTextField(_phoneController, 'Teléfono'),
-              buildTextField(_emailController, 'Correo Electrónico'),
+              buildTextField(_emailController, 'Correo Electronico'),
               SizedBox(height: 20),
               ElevatedButton(
                 onPressed: submitForm,
@@ -134,12 +134,12 @@ class _ReleaseClientState extends State<Release_Client> {
 
   void submitForm() {
     final clientData = {
-      'name': _nameController.text,
-      'email': _emailController.text,
-      'representative': _representativeController.text,
-      'rfc': _rfcController.text,
-      'address': _addressController.text,
-      'phone': _phoneController.text,
+      'Nombre': _nameController.text,
+      'Correo Electronico': _emailController.text,
+      'Representante': _representativeController.text,
+      'RFC': _rfcController.text,
+      'Direccion': _addressController.text,
+      'Telefono': _phoneController.text,
     };
     widget.onSave(clientData);
     Navigator.pop(context);

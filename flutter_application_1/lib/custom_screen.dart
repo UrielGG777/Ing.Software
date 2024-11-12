@@ -135,10 +135,10 @@ class _CustomScreenState extends State<CustomScreen> {
     } else {
       return clients
           .where((client) =>
-              client['name']!
+              client['Nombre']!
                   .toLowerCase()
                   .contains(_searchText.toLowerCase()) ||
-              client['email']!
+              client['Correo Electronico']!
                   .toLowerCase()
                   .contains(_searchText.toLowerCase()))
           .toList();
@@ -165,9 +165,9 @@ class _CustomScreenState extends State<CustomScreen> {
               border: Border.all(color: Colors.grey.shade300),
             ),
             child: ListTile(
-              title: Text(filteredClients[index]['name']!,
+              title: Text(filteredClients[index]['Nombre']!,
                   style: TextStyle(color: Colors.black)),
-              subtitle: Text(filteredClients[index]['email']!,
+              subtitle: Text(filteredClients[index]['Correo Electronico']!,
                   style: TextStyle(color: Colors.black)),
               onTap: () {
                 Navigator.push(
@@ -193,8 +193,9 @@ class _CustomScreenState extends State<CustomScreen> {
                               setState(() {
                                 int originalIndex = clients.indexWhere(
                                     (client) =>
-                                        client['email'] ==
-                                        filteredClients[index]['email']);
+                                        client['Correo Electronico'] ==
+                                        filteredClients[index]
+                                            ['Correo Electronico']);
                                 clients[originalIndex] = updatedClientData;
                               });
                             },
@@ -206,8 +207,8 @@ class _CustomScreenState extends State<CustomScreen> {
                           updatedClient is Map<String, String>) {
                         setState(() {
                           int originalIndex = clients.indexWhere((client) =>
-                              client['email'] ==
-                              filteredClients[index]['email']);
+                              client['Correo Electronico'] ==
+                              filteredClients[index]['Correo Electronico']);
                           clients[originalIndex] = updatedClient;
                         });
                       }
@@ -218,7 +219,8 @@ class _CustomScreenState extends State<CustomScreen> {
                     onPressed: () {
                       setState(() {
                         clients.removeWhere((client) =>
-                            client['email'] == filteredClients[index]['email']);
+                            client['Correo Electronico'] ==
+                            filteredClients[index]['Correo Electronico']);
                       });
                     },
                   ),
